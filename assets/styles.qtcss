@@ -60,6 +60,17 @@ QLabel {
   padding: 2px 4px;
 }
 
+QLineEdit, QSpinBox {
+  background-color: #181818;
+  border: none;
+  padding: 1px 4px 2px 4px;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+  background: transparent;
+  width: 0;
+}
+
 QPushButton {
   background: #202020;
   border: 2px solid #404040;
@@ -67,12 +78,6 @@ QPushButton {
 }
 QPushButton:hover {
   border-color: #c0c020;
-}
-
-QLineEdit {
-  background-color: #181818;
-  border: none;
-  padding: 1px 4px 2px 4px;
 }
 
 QSlider {
@@ -112,7 +117,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-  image: url(./assets/comboBoxArrow.png);
+  image: url(./assets/arrowDown.png);
 }
 
 QComboBox QAbstractItemView {

@@ -79,7 +79,7 @@ class Component(QFrame):
     idWidget = QLabel(formatId(self.id))
     idWidget.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
-    nameWidget = EditableLabel(self.onNameUpdate, self.name)
+    nameWidget = EditableLabel(self.onNameUpdate, 'text', self.name)
     nameWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
 
     self.inputWidget = component(self.onValueUpdate)
