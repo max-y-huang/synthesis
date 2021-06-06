@@ -1,52 +1,52 @@
-from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
+from PyQt6.QtGui import QFontDatabase
+from PyQt6.QtWidgets import QVBoxLayout, QWidget, QApplication, QHBoxLayout, QSizePolicy, QSpacerItem
+from PyQt6.QtCore import Qt
 
-from WaveOutput import WaveOutput
-from WaveInputComponent import WaveInputComponent
-from WaveSplitter import WaveSplitter
+import sys
+import synthesizer
 
-class Main(App):
+from ComponentList import ComponentList
+from ControllerList import ControllerList
+from Output import Output
 
-  wave_splitter = WaveSplitter()
+class Window(QWidget):
+
+  def onComponentUpdate(self):
+    self.controllerList.update()
+    self.output.waveLeft.updateValue(synthesizer.getData())
 
   def __init__(self):
-    super(Main, self).__init__()
 
-  def update_output(self):
+    super().__init__()
+    self.setFixedSize(0, 0)  # Auto-fits
+    self.setWindowTitle('Synthesis')
+    self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+    QFontDatabase.addApplicationFont('./assets/Play.ttf')
+    self.initGUI()
+    # Initialize program with a wave input and a controller
+    self.componentList.addWaveInput()
+    self.controllerList.addController()
+  
+  def initGUI(self):
 
-    total_input = [0] * 64
-    for i in range(64):
-      for input in self.wave_inputs:
-        total_input[i] += input.input[i] * input.sign
-    
-    self.wave_output.update(self.wave_splitter.split(total_input, 64 // 2))
+    self.output = Output()
+    self.controllerList = ControllerList()
+    self.componentList = ComponentList(self.onComponentUpdate)
 
-  def build(self):
+    rightLayout = QVBoxLayout()
+    rightLayout.setSpacing(16)
+    rightLayout.addWidget(self.controllerList)
+    rightLayout.addWidget(self.output)
+    rightLayout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-    layout = BoxLayout(orientation='vertical')
+    layout = QHBoxLayout()
+    layout.setSpacing(16)
+    layout.addWidget(self.componentList)
+    layout.addLayout(rightLayout)
+    self.setLayout(layout)
 
-    # b1 = Button()
-    # b2 = Button()
-
-    # layout2 = BoxLayout()
-
-    # layout2.add_widget(b1)
-    # layout2.add_widget(b2)
-
-    # layout.add_widget(layout2)
-
-    # print(b1.pos, b1.size, b1.x, b1.y)
-    # print(b2.pos, b2.size, b2.x, b2.y)
-
-    self.wave_inputs = [
-      WaveInputComponent(layout, 32, 32, 420, 150, self.update_output),
-      WaveInputComponent(layout, 32, 200, 420, 150, self.update_output),
-    ]
-
-    self.wave_output = WaveOutput(32, 400, 420, 100)
-    layout.add_widget(self.wave_output)
-    return layout
-
-Main().run()
+app = QApplication(sys.argv)
+app.setStyleSheet(open('./assets/styles.qtcss', 'r').read())
+window = Window()
+window.show()
+sys.exit(app.exec())

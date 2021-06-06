@@ -1,0 +1,135 @@
+QWidget {
+  background: #181818;
+  color: #f1f1f1;
+  font-family: 'Play';
+  font-size: 14px;
+}
+
+QGroupBox {
+  border: 2px solid #404040;
+  border-radius: 5px;
+  padding-top: 12px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+
+QGroupBox::title {
+  subcontrol-origin: margin;
+  padding: 0 8px;
+}
+
+QFrame {
+  background: #202020;
+  border: 2px solid #404040;
+  border-radius: 4px;
+}
+
+QScrollArea {
+  margin: 0;
+  background: #181818;
+  border: none;
+}
+
+QScrollBar:vertical {
+  background: transparent;
+}
+QScrollBar:vertical {
+  width: 9px;
+}
+QScrollBar:horizontal {
+  height: 9px;
+}
+
+QScrollBar::handle {
+  background: transparent;
+  border-radius: 4px;
+}
+QScrollBar::handle:enabled {
+  background: #606060;
+}
+QScrollBar::handle:enabled:hover {
+  background: #a0a0a0;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line, QScrollBar::add-page, QScrollBar::sub-page {
+  background: none;
+}
+
+QLabel {
+  border: none;
+  padding: 2px 4px;
+}
+
+QPushButton {
+  background: #202020;
+  border: 2px solid #404040;
+  border-radius: 4px;
+}
+QPushButton:hover {
+  border-color: #c0c020;
+}
+
+QLineEdit {
+  background-color: #181818;
+  border: none;
+  padding: 1px 4px 2px 4px;
+}
+
+QSlider {
+  background: transparent;
+}
+
+QSlider::groove {
+  background: #101010;
+  width: 4px;
+}
+
+QSlider::handle {
+  background: #202020;
+  border: 2px solid #c0c020;
+  border-radius: 10px;
+  height: 16px;
+  margin: 0 -8px;
+}
+
+QDial {
+  outline: none;
+  background: transparent;
+}
+
+QComboBox {
+  background: #202020;
+  border: 2px solid #404040;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+QComboBox:hover {
+  border-color: #c0c020;
+}
+
+QComboBox::drop-down {
+  background: transparent;
+}
+
+QComboBox::down-arrow {
+  image: url(./assets/comboBoxArrow.png);
+}
+
+QComboBox QAbstractItemView {
+  background: #202020;
+  border: 2px solid #404040;
+  border-radius: 4px;
+  outline: 0;
+}
+
+QComboBox QAbstractItemView::item {
+  background: #202020;
+  padding: 2px 4px;
+}
+QComboBox QAbstractItemView::item:selected {
+  background: rgba(192, 192, 32, 0.3);
+}
+
+/* QWidget {
+  border: 1px solid #ff0000
+} */
