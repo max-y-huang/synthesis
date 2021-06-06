@@ -1,12 +1,11 @@
-from PyQt6.QtWidgets import QSizePolicy, QSlider, QSpinBox, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QSizePolicy, QSlider, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt
 
 from Widgets.EditableLabel import EditableLabel
-from Widgets.SpinBox import SpinBox
 
 class LabelSlider(QWidget):
 
-  def __init__(self):
+  def __init__(self, min=0, max=100, defaultValue=50):
 
     super().__init__()
 
@@ -22,6 +21,16 @@ class LabelSlider(QWidget):
     layout.addWidget(self.slider)
     layout.addWidget(self.label)
     self.setLayout(layout)
+
+    self.setRange(min, max)
+    self.setValue(defaultValue)
+  
+  def setValue(self, value):
+    self.slider.setValue(value)  # Changing slider value changes label value.
+
+  def setRange(self, min, max):
+    self.slider.setRange(min, max)
+    self.label.input.setRange(min, max)
   
   def onLabelChanged(self, value):
     self.slider.setValue(value)

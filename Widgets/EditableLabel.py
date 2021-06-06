@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QSizePolicy, QSpinBox, QWidget, QVBoxLayout, QLineEdit, QLabel
+from PyQt6.QtWidgets import QSizePolicy, QWidget, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt
 
 from Widgets.LineEdit import LineEdit
