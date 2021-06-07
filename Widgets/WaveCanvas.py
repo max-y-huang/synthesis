@@ -61,6 +61,7 @@ class WaveCanvas(QFrame):
     pen = QPen()
     pen.setColor(QColor(192, 192, 32))
     pen.setWidth(2)
+    pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
     qp = QPainter()
     qp.begin(self)

@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QPushButton, QSizePolicy, QVBoxLayout, QDial, QFrame, QSpacerItem
 
+from Widgets.Dial import Dial
 from Widgets.ScrollGroupBox import HScrollGroupBox
 from funcs import formatId
 from store import Store
@@ -58,14 +59,16 @@ class Controller(QFrame):
     self.componentSelect = QComboBox()
     self.updateComponentSelect()
 
-    self.volumeL = QDial()
-    self.volumeR = QDial()
+    self.volumeL = Dial()
+    self.volumeR = Dial()
 
     volumeLayout = QHBoxLayout()
+    volumeLayout.setSpacing(8)
     volumeLayout.addWidget(self.volumeL)
     volumeLayout.addWidget(self.volumeR)
 
     layout = QVBoxLayout()
+    layout.setSpacing(8)
     layout.addWidget(self.componentSelect)
     layout.addLayout(volumeLayout)
     self.setLayout(layout)

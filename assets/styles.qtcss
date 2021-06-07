@@ -87,14 +87,20 @@ QSlider {
 QSlider::groove {
   background: #101010;
   width: 4px;
+  border-radius: 2px;
 }
 
 QSlider::handle {
   background: #202020;
   border: 2px solid #c0c020;
-  border-radius: 10px;
-  height: 16px;
-  margin: 0 -8px;
+  border-radius: 9px;
+  height: 14px;
+  margin: 0 -7px;
+}
+
+QSlider::add-page {
+  background: #c0c020;
+  border-radius: 2px;
 }
 
 QDial {

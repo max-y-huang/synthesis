@@ -9,23 +9,25 @@ class EditableLabel(QWidget):
   def __init__(self, onChange, type, val='Edit me!', textAlign=Qt.AlignmentFlag.AlignLeft):
 
     super().__init__()
-    inputComponent = { 'text': LineEdit, 'number': SpinBox }
     self.editing = False
 
     self.type = type
     self.onChange = onChange
     self.value = val
+    self.initGUI(textAlign)
+  
+  def initGUI(self, textAlign):
+
+    inputComponent = { 'text': LineEdit, 'number': SpinBox }
 
     self.label = QLabel(str(self.value))
     self.label.setAlignment(textAlign)
-    self.label.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+    self.label.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
     self.label.setStyleSheet('color: #c0c020; font-weight: 500;')
 
     self.input = inputComponent[self.type](self.endEdit)
-    if self.type == 'text':
-      self.input.returnPressed.connect(self.endEdit)
     self.input.setAlignment(textAlign)
-    self.input.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+    self.input.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
     self.input.hide()
 
     layout = QVBoxLayout()

@@ -8,6 +8,11 @@ class LabelSlider(QWidget):
   def __init__(self, min=0, max=100, defaultValue=50):
 
     super().__init__()
+    self.initGUI()
+    self.setRange(min, max)
+    self.setValue(defaultValue)
+  
+  def initGUI(self):
 
     self.slider = QSlider()
     self.slider.valueChanged.connect(self.onSliderChanged)
@@ -21,9 +26,6 @@ class LabelSlider(QWidget):
     layout.addWidget(self.slider)
     layout.addWidget(self.label)
     self.setLayout(layout)
-
-    self.setRange(min, max)
-    self.setValue(defaultValue)
   
   def setValue(self, value):
     self.slider.setValue(value)  # Changing slider value changes label value.
