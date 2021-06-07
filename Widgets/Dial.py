@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QSizePolicy, QVBoxLayout, QWidget
 from PyQt6.QtGui import QPainter, QPen, QColor
 from PyQt6.QtCore import Qt
 
 import math, numpy
 
 from Widgets.EditableLabel import EditableLabel
+from funcs import clamp
 
 class Dial(QWidget):
 
@@ -12,12 +13,12 @@ class Dial(QWidget):
   startAngle = 5 / 4 * math.pi
   spanAngle = -3 / 2 * math.pi
 
-  def __init__(self, min=0, max=100, defaultValue=25):
+  def __init__(self, min=0, max=100, defaultValue=50):
 
     super().__init__()
     self.max = 100
     self.min = 0
-    self.setMinimumSize(80, 80)
+    self.setFixedSize(82, 72)
     self.initGUI()
     self.setRange(min, max)
     self.setValue(defaultValue)
@@ -27,13 +28,13 @@ class Dial(QWidget):
     self.label = EditableLabel(self.onLabelChanged, 'number', 0, Qt.AlignmentFlag.AlignCenter)
     
     layout = QVBoxLayout()
-    layout.setContentsMargins(20, 0, 20, 0)
+    layout.setContentsMargins(20, 5, 20, 0)
     layout.addWidget(self.label)
     self.setLayout(layout)
   
   def setValue(self, value):
-    self.value = value
-    self.label.setValue(value)
+    self.value = clamp(value, self.min, self.max)
+    self.label.setValue(self.value)
     self.repaint()
 
   def setRange(self, min, max):
@@ -52,13 +53,13 @@ class Dial(QWidget):
     return self.geometry().height()
   
   def getCenterX(self):
-    return self.getWidth() / 2
+    return 41
   
   def getCenterY(self):
-    return self.getHeight() / 2
+    return 41
   
   def getRadius(self):
-    return min(self.getWidth(), self.getHeight()) / 2 - self.dialSize / 2
+    return 32
   
   def valueToPercent(self):
     return numpy.interp(self.value, [self.min, self.max], [0, 1])
@@ -107,6 +108,7 @@ class Dial(QWidget):
     qp = QPainter()
     qp.begin(self)
     qp.setRenderHint(QPainter.RenderHint.Antialiasing)
+    # qp.drawRect(0, 0, self.getWidth(), self.getHeight())
     # Draw total arc.
     qp.setPen(pen)
     self.drawArc(qp, self.getCenterX(), self.getCenterY(), self.getRadius(), self.startAngle, self.spanAngle)
@@ -137,3 +139,6 @@ class Dial(QWidget):
   
   def handleMouseEvent(self, event):
     self.setValue(self.positionToValue(event.position().x(), event.position().y()))
+
+  def wheelEvent(self, event):
+    self.setValue(round(self.value + event.angleDelta().y() / 40))

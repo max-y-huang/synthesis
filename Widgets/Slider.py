@@ -2,8 +2,9 @@ from PyQt6.QtWidgets import QSizePolicy, QSlider, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt
 
 from Widgets.EditableLabel import EditableLabel
+from funcs import clamp
 
-class LabelSlider(QWidget):
+class Slider(QWidget):
 
   def __init__(self, min=0, max=100, defaultValue=50):
 
@@ -28,9 +29,12 @@ class LabelSlider(QWidget):
     self.setLayout(layout)
   
   def setValue(self, value):
-    self.slider.setValue(value)  # Changing slider value changes label value.
+    newValue = clamp(value, self.min, self.max)
+    self.slider.setValue(newValue)  # Changing slider value changes label value.
 
   def setRange(self, min, max):
+    self.min = min
+    self.max = max
     self.slider.setRange(min, max)
     self.label.input.setRange(min, max)
   

@@ -12,7 +12,7 @@ class WaveCanvas(QFrame):
 
   padding = 24
 
-  def __init__(self, res, snap=0):
+  def __init__(self, res, snap=0, color=QColor(192, 192, 32)):
 
     super().__init__()
     self.setFixedHeight(HEIGHT)
@@ -20,6 +20,7 @@ class WaveCanvas(QFrame):
 
     self.res = res
     self.snap = snap
+    self.color = color
     
     self.value = [0] * self.res
   
@@ -59,7 +60,7 @@ class WaveCanvas(QFrame):
     value = self.value
     # Set data lines pen.
     pen = QPen()
-    pen.setColor(QColor(192, 192, 32))
+    pen.setColor(self.color)
     pen.setWidth(2)
     pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 

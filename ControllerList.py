@@ -1,11 +1,12 @@
-from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QPushButton, QSizePolicy, QVBoxLayout, QDial, QFrame, QSpacerItem
+from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QVBoxLayout, QDial, QFrame, QSpacerItem
+from PyQt6.QtCore import Qt
 
 from Widgets.Dial import Dial
 from Widgets.ScrollGroupBox import HScrollGroupBox
 from funcs import formatId
 from store import Store
 
-CONTROLLER_HEIGHT = 128
+# CONTROLLER_HEIGHT = 150
 
 class ControllerList(HScrollGroupBox):
 
@@ -21,8 +22,7 @@ class ControllerList(HScrollGroupBox):
 
     addControllerButton = QPushButton('Add Controller')
     addControllerButton.clicked.connect(self.addController)
-    addControllerButton.setFixedHeight(CONTROLLER_HEIGHT)
-    addControllerButton.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+    addControllerButton.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
     addControllerButton.setStyleSheet('padding: 16 24')
 
     footerLayout = QHBoxLayout()
@@ -59,20 +59,22 @@ class Controller(QFrame):
     self.componentSelect = QComboBox()
     self.updateComponentSelect()
 
-    self.volumeL = Dial()
-    self.volumeR = Dial()
+    self.intensity = Dial()
+    self.intensity.setToolTip("Intensity")
+    self.pan = Dial(-100, 100, 0)
+    self.pan.setToolTip("Pan")
 
-    volumeLayout = QHBoxLayout()
-    volumeLayout.setSpacing(8)
-    volumeLayout.addWidget(self.volumeL)
-    volumeLayout.addWidget(self.volumeR)
+    dialLayout = QHBoxLayout()
+    dialLayout.setSpacing(8)
+    dialLayout.addWidget(self.intensity)
+    dialLayout.addWidget(self.pan)
 
     layout = QVBoxLayout()
     layout.setSpacing(8)
     layout.addWidget(self.componentSelect)
-    layout.addLayout(volumeLayout)
+    layout.addLayout(dialLayout)
     self.setLayout(layout)
-    self.setFixedHeight(CONTROLLER_HEIGHT)
+    # self.setFixedHeight(CONTROLLER_HEIGHT)
     self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
   
   def updateComponentSelect(self):

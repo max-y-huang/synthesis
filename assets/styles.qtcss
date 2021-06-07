@@ -1,3 +1,10 @@
+QToolTip {
+  border: 1px solid #101010;
+  background-color: #202020;
+  color: #f1f1f1;
+  padding: 2px;
+}
+
 QWidget {
   background: #181818;
   color: #f1f1f1;
@@ -75,6 +82,7 @@ QPushButton {
   background: #202020;
   border: 2px solid #404040;
   border-radius: 4px;
+  outline: 0;
 }
 QPushButton:hover {
   border-color: #c0c020;
@@ -140,7 +148,3 @@ QComboBox QAbstractItemView::item {
 QComboBox QAbstractItemView::item:selected {
   background: rgba(192, 192, 32, 0.3);
 }
-
-/* QWidget {
-  border: 1px solid #ff0000
-} */

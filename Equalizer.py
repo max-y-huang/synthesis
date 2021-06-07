@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QFrame, QHBoxLayout
 
-from Widgets.LabelSlider import LabelSlider
+from Widgets.Slider import Slider
 
 HEIGHT = 180
 
@@ -15,7 +15,7 @@ class Equalizer(QFrame):
 
     self.sliders = []
     for i in range(7):
-      slider = LabelSlider()
+      slider = Slider()
       self.sliders.append(slider)
       sliderLayout.addWidget(slider)
     
