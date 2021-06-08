@@ -60,19 +60,36 @@ class WaveCanvas(QFrame):
     value = self.value
     # Set data lines pen.
     pen = QPen()
-    pen.setColor(self.color)
+    pen.setColor(QColor(24, 24, 24))
     pen.setWidth(2)
     pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
     qp = QPainter()
     qp.begin(self)
     qp.setRenderHint(QPainter.RenderHint.Antialiasing)
+    qp.setPen(pen)
+    # Draw grid lines.
+    self.drawHGridLine(qp, 0)
+    self.drawVGridLine(qp, 0)
+    self.drawHGridLine(qp, 1 / 2)
+    self.drawHGridLine(qp, -1 / 2)
+    self.drawVGridLine(qp, 1 / 2)
+    self.drawVGridLine(qp, -1 / 2)
     # Draw data lines.
+    pen.setColor(self.color)
     qp.setPen(pen)
     for i in range(len(value) - 1):
       qp.drawLine(self.coordToRealX(i), self.coordToRealY(value[i]), self.coordToRealX(i + 1), self.coordToRealY(value[i + 1]))
     
     qp.end()
+  
+  def drawHGridLine(self, qp, pos):
+    y = self.getHeight() / 2 + self.getInnerHeight() / 2 * pos
+    qp.drawLine(self.padding, y, self.getWidth() - self.padding, y)
+  
+  def drawVGridLine(self, qp, pos):
+    x = self.getWidth() / 2 + self.getInnerWidth() / 2 * pos
+    qp.drawLine(x, self.padding, x, self.getHeight() - self.padding)
   
   def updateValue(self, input):
     self.value = input

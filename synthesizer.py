@@ -4,7 +4,7 @@ from store import Store
 
 def getData():
 
-  totalInput = [0] * 64
+  totalInput = [0] * 65
   for c in Store.components:
     if 'value' in c:
       for i, val in enumerate(c['value']):

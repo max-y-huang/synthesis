@@ -13,8 +13,8 @@ class Output(QGroupBox):
   
   def initGUI(self):
 
-    self.waveLeft = WaveCanvas(64, 0, QColor(32, 156, 255))
-    self.waveRight = WaveCanvas(64, 0, QColor(32, 156, 255))
+    self.waveLeft = WaveCanvas(65, 0, QColor(32, 156, 255))
+    self.waveRight = WaveCanvas(65, 0, QColor(32, 156, 255))
 
     layout = QVBoxLayout()
     layout.setContentsMargins(8, 8, 8, 8)
