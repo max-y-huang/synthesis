@@ -80,5 +80,11 @@ class Controller(QFrame):
       id, name = c['id'], c['name']
       return f'<{formatId(id)}> {name}'
 
+    items = list(map(getComponentDisplayName, Store.components))
+    value = self.componentSelect.currentIndex()
+    if value == -1:
+      value = len(items) - 1
+
     self.componentSelect.clear()
-    self.componentSelect.addItems(list(map(getComponentDisplayName, Store.components)))
+    self.componentSelect.addItems(items)
+    self.componentSelect.setCurrentIndex(value)
