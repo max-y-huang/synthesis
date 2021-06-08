@@ -4,8 +4,10 @@ from store import Store
 
 def getData():
 
-  totalInput = [0] * 65
+  totalInput = [0] * Store.WAVE_INPUT_RES
   for c in Store.components:
+    if c['type'] != 'wave input':
+      continue
     if 'value' in c:
       for i, val in enumerate(c['value']):
         totalInput[i] += val

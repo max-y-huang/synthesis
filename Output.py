@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QGroupBox, QSizePolicy, QVBoxLayout
-from PyQt6.QtGui import QPainter, QPen, QColor
+from PyQt6.QtGui import QColor
 
 from Widgets.WaveCanvas import WaveCanvas
+from store import Store
 
 class Output(QGroupBox):
 
@@ -13,8 +14,8 @@ class Output(QGroupBox):
   
   def initGUI(self):
 
-    self.waveLeft = WaveCanvas(65, 0, QColor(32, 156, 255))
-    self.waveRight = WaveCanvas(65, 0, QColor(32, 156, 255))
+    self.waveLeft = WaveCanvas(Store.WAVE_INPUT_RES, 0, QColor(32, 156, 255), False)
+    self.waveRight = WaveCanvas(Store.WAVE_INPUT_RES, 0, QColor(32, 156, 255), False)
 
     layout = QVBoxLayout()
     layout.setContentsMargins(8, 8, 8, 8)

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QVBoxLayout, QFrame, QSpacerItem
+from PyQt6.QtWidgets import QComboBox, QHBoxLayout,  QPushButton, QSizePolicy, QVBoxLayout, QFrame, QSpacerItem
 
 from Widgets.Dial import LabelDial
 from Widgets.ScrollGroupBox import HScrollGroupBox
@@ -58,8 +58,8 @@ class Controller(QFrame):
     self.componentSelect = QComboBox()
     self.updateComponentSelect()
 
-    self.intensity = LabelDial('Intensity')
-    self.pan = LabelDial('Pan', -100, 100, 0)
+    self.intensity = LabelDial('Intensity', lambda val: print(val))
+    self.pan = LabelDial('Pan', lambda val: print(val), -100, 100, 0)
 
     dialLayout = QHBoxLayout()
     dialLayout.setSpacing(8)

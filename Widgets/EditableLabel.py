@@ -62,16 +62,18 @@ class EditableLabel(QWidget):
     self.startEdit()
   
   def startEdit(self):
-    if not self.editing:
-      self.editing = True
-      self.label.hide()
-      self.input.show()
-      self.input.setFocus()
+    if self.editing:
+      return
+    self.editing = True
+    self.label.hide()
+    self.input.show()
+    self.input.setFocus()
   
   def endEdit(self):
-    if self.editing:
-      self.editing = False
-      self.updateValue()
-      self.input.hide()
-      self.label.show()
-      self.onChange(self.value)
+    if not self.editing:
+      return
+    self.editing = False
+    self.updateValue()
+    self.input.hide()
+    self.label.show()
+    self.onChange(self.value)

@@ -11,10 +11,10 @@ class ComponentList(VScrollGroupBox):
 
   count = 0
 
-  def __init__(self, onUpdate):
+  def __init__(self, onChange):
 
     super().__init__('Components')
-    self.onUpdate = onUpdate
+    self.onChange = onChange
     self.components = []
     self.initGUI()
   
@@ -44,13 +44,13 @@ class ComponentList(VScrollGroupBox):
     self.setFixedWidth(480)
 
   def addWaveInput(self):
-    c = Component(WaveInput, self.onUpdate, self.count, 'New Wave')
+    c = Component('wave input', self.onChange, self.count, 'New Wave')
     self.components.append(c)
     self.listLayout.addWidget(c)
     self.count += 1
   
   def addEqualizer(self):
-    c = Component(Equalizer, self.onUpdate, self.count, 'New EQ')
+    c = Component('equalizer', self.onChange, self.count, 'New EQ')
     self.components.append(c)
     self.listLayout.addWidget(c)
     self.count += 1
@@ -58,31 +58,36 @@ class ComponentList(VScrollGroupBox):
 
 class Component(QFrame):
 
-  def onValueUpdate(self, input):
+  def onValueChange(self, input):
     Store.components[self.id]['value'] = input
-    self.onUpdate()
+    self.onChange()
   
-  def onNameUpdate(self, name):
+  def onNameChange(self, name):
     Store.components[self.id]['name'] = name
-    self.onUpdate()
+    self.onChange()
 
-  def __init__(self, component, onUpdate, id, name='Component'):
+  def __init__(self, type, onChange, id, name='Component'):
 
     super().__init__()
+    self.type = type
     self.id = id
     self.name = name
-    self.onUpdate = onUpdate
-    self.initGUI(component)
-    self.initInStore(name, self.inputWidget.value)
+    self.onChange = onChange
+    self.initInStore()
+    self.initGUI()
+    self.onNameChange(name)
+    self.onValueChange(self.inputWidget.value)
   
-  def initGUI(self, component):
+  def initGUI(self):
+    inputWidgetComponent = { 'wave input': WaveInput, 'equalizer': Equalizer }
+
     idWidget = QLabel(formatId(self.id))
     idWidget.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
-    nameWidget = EditableLabel(self.onNameUpdate, 'text', self.name)
+    nameWidget = EditableLabel(self.onNameChange, 'text', self.name)
     nameWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
 
-    self.inputWidget = component(self.onValueUpdate)
+    self.inputWidget = inputWidgetComponent[self.type](self.onValueChange)
 
     labelLayout = QHBoxLayout()
     labelLayout.addWidget(idWidget)
@@ -94,7 +99,5 @@ class Component(QFrame):
     self.setLayout(layout)
     self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
   
-  def initInStore(self, name, value):
-    Store.components.append({ 'id': self.id })
-    self.onNameUpdate(name)
-    self.onValueUpdate(value)
+  def initInStore(self):
+    Store.components.append({ 'id': self.id, 'type': self.type, 'name': '', 'value': [] })

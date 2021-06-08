@@ -12,7 +12,7 @@ class WaveCanvas(QFrame):
 
   padding = 24
 
-  def __init__(self, res, snap=0, color=QColor(192, 192, 32)):
+  def __init__(self, res, snap=0, color=QColor(192, 192, 32), drawGridLines=True):
 
     super().__init__()
     self.setFixedHeight(HEIGHT)
@@ -21,6 +21,7 @@ class WaveCanvas(QFrame):
     self.res = res
     self.snap = snap
     self.color = color
+    self.drawGridLines = drawGridLines
     
     self.value = [0] * self.res
   
@@ -44,7 +45,7 @@ class WaveCanvas(QFrame):
   
   def realToCoordY(self, y):
     y = clamp(y - self.padding, 0, self.getInnerHeight())       # Remove offset and clamp inside input boundaries.
-    ret = numpy.interp(y, [0, self.getInnerHeight()], [-1, 1])  # Map from -1 to 1
+    ret = numpy.interp(y, [0, self.getInnerHeight()], [1, -1])  # Map from 1 to -1
     if self.snap != 0:
       ret = round(ret / self.snap) * self.snap                  # Snap with respect to the snap interval.
     return ret
@@ -53,7 +54,7 @@ class WaveCanvas(QFrame):
     return numpy.interp(x, [0, self.res - 1], [0, self.getInnerWidth()]) + self.padding
   
   def coordToRealY(self, y):
-    return numpy.interp(y, [-1, 1], [0, self.getInnerHeight()]) + self.padding
+    return numpy.interp(-y, [-1, 1], [0, self.getInnerHeight()]) + self.padding
 
   def paintEvent(self, event):
 
@@ -69,12 +70,13 @@ class WaveCanvas(QFrame):
     qp.setRenderHint(QPainter.RenderHint.Antialiasing)
     qp.setPen(pen)
     # Draw grid lines.
-    self.drawHGridLine(qp, 0)
-    self.drawVGridLine(qp, 0)
-    self.drawHGridLine(qp, 1 / 2)
-    self.drawHGridLine(qp, -1 / 2)
-    self.drawVGridLine(qp, 1 / 2)
-    self.drawVGridLine(qp, -1 / 2)
+    if self.drawGridLines:
+      self.drawHGridLine(qp, 0)
+      self.drawVGridLine(qp, 0)
+      self.drawHGridLine(qp, 1 / 2)
+      self.drawHGridLine(qp, -1 / 2)
+      self.drawVGridLine(qp, 1 / 2)
+      self.drawVGridLine(qp, -1 / 2)
     # Draw data lines.
     pen.setColor(self.color)
     qp.setPen(pen)

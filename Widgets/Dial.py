@@ -9,11 +9,11 @@ from funcs import clamp
 
 class LabelDial(QWidget):
 
-  def __init__(self, text, min=0, max=100, defaultValue=50):
+  def __init__(self, text, onChange, min=0, max=100, defaultValue=50):
 
     super().__init__()
 
-    self.dial = Dial(min, max, defaultValue)
+    self.dial = Dial(onChange, min, max, defaultValue)
 
     label = QLabel(text)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -25,6 +25,9 @@ class LabelDial(QWidget):
     layout.addWidget(label)
     self.setLayout(layout)
   
+  def getValue(self):
+    return self.dial.value
+
   def setValue(self, value):
     self.dial.setValue(value)
   
@@ -38,9 +41,10 @@ class Dial(QWidget):
   startAngle = 5 / 4 * math.pi
   spanAngle = -3 / 2 * math.pi
 
-  def __init__(self, min=0, max=100, defaultValue=50):
+  def __init__(self, onChange, min=0, max=100, defaultValue=50):
 
     super().__init__()
+    self.onChange = onChange
     self.max = 100
     self.min = 0
     self.setFixedSize(82, 72)
@@ -50,26 +54,24 @@ class Dial(QWidget):
   
   def initGUI(self):
 
-    self.label = EditableLabel(self.onLabelChanged, 'number', 0, Qt.AlignmentFlag.AlignCenter)
+    self.label = EditableLabel(self.setValue, 'number', 0, Qt.AlignmentFlag.AlignCenter)
     
     layout = QVBoxLayout()
     layout.setContentsMargins(20, 5, 20, 0)
     layout.addWidget(self.label)
     self.setLayout(layout)
-  
+
   def setValue(self, value):
     self.value = clamp(value, self.min, self.max)
     self.label.setValue(self.value)
     self.repaint()
+    self.onChange(self.value)
 
   def setRange(self, min, max):
     self.min = min
     self.max = max
     self.label.input.setRange(min, max)
     self.repaint()
-  
-  def onLabelChanged(self, value):
-    self.setValue(value)
   
   def getWidth(self):
     return self.geometry().width()

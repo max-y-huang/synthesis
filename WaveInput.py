@@ -4,23 +4,21 @@ from PyQt6.QtCore import Qt
 import numpy
 
 from Widgets.WaveCanvas import WaveCanvas
+from store import Store
 
 class WaveInput(WaveCanvas):
 
-  def __init__(self, onUpdate):
+  def __init__(self, onChange):
     
-    super().__init__(65, 1/32)
+    super().__init__(Store.WAVE_INPUT_RES, 1/32)
     self.prevMousePos = None
-    self.onUpdate = onUpdate
+    self.onChange = onChange
   
   def mousePressEvent(self, event):
     self.handleMouseEvent(event, QApplication.keyboardModifiers() == Qt.KeyboardModifier.ShiftModifier)
   
   def mouseMoveEvent(self, event):
     self.handleMouseEvent(event, True)
-  
-  def mouseReleaseEvent(self, event):
-    pass
   
   def handleMouseEvent(self, event, usePrevPos):
     x, y = event.position().x(), event.position().y()
@@ -38,5 +36,5 @@ class WaveInput(WaveCanvas):
       self.value[i] = numpy.interp(i, [px, x], [py, y])
     
     self.prevMousePos = pos
-    self.onUpdate(self.value)
+    self.onChange(self.value)
     self.repaint()
