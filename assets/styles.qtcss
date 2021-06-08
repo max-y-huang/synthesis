@@ -63,6 +63,7 @@ QScrollBar::add-line, QScrollBar::sub-line, QScrollBar::add-page, QScrollBar::su
 }
 
 QLabel {
+  color: #909090;
   border: none;
   padding: 2px 4px;
 }
