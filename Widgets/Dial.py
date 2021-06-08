@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QSizePolicy, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PyQt6.QtGui import QPainter, QPen, QColor
 from PyQt6.QtCore import Qt
 
@@ -6,6 +6,30 @@ import math, numpy
 
 from Widgets.EditableLabel import EditableLabel
 from funcs import clamp
+
+class LabelDial(QWidget):
+
+  def __init__(self, text, min=0, max=100, defaultValue=50):
+
+    super().__init__()
+
+    self.dial = Dial(min, max, defaultValue)
+
+    label = QLabel(text)
+    label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    layout = QVBoxLayout()
+    layout.setSpacing(0)
+    layout.addWidget(self.dial)
+    layout.addWidget(label)
+    self.setLayout(layout)
+  
+  def setValue(self, value):
+    self.dial.setValue(value)
+  
+  def setRange(self, min, max):
+    self.dial.setRange(min, max)
+
 
 class Dial(QWidget):
 
