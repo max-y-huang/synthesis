@@ -13,7 +13,10 @@ class Window(QWidget):
 
   def onComponentUpdate(self):
     self.controllerList.update()
-    self.output.waveLeft.updateValue(synthesizer.getData())
+    self.output.waveLeft.updateValue(synthesizer.calculateOutput())
+  
+  def onControllerUpdate(self):
+    self.output.waveLeft.updateValue(synthesizer.calculateOutput())
 
   def __init__(self):
 
@@ -30,7 +33,7 @@ class Window(QWidget):
   def initGUI(self):
 
     self.output = Output()
-    self.controllerList = ControllerList()
+    self.controllerList = ControllerList(self.onControllerUpdate)
     self.componentList = ComponentList(self.onComponentUpdate)
 
     rightLayout = QVBoxLayout()

@@ -58,14 +58,6 @@ class ComponentList(VScrollGroupBox):
 
 class Component(QFrame):
 
-  def onValueChange(self, input):
-    Store.components[self.id]['value'] = input
-    self.onChange()
-  
-  def onNameChange(self, name):
-    Store.components[self.id]['name'] = name
-    self.onChange()
-
   def __init__(self, type, onChange, id, name='Component'):
 
     super().__init__()
@@ -101,3 +93,11 @@ class Component(QFrame):
   
   def initInStore(self):
     Store.components.append({ 'id': self.id, 'type': self.type, 'name': '', 'value': [] })
+
+  def onValueChange(self, input):
+    Store.components[self.id]['value'] = input
+    self.onChange()
+  
+  def onNameChange(self, name):
+    Store.components[self.id]['name'] = name
+    self.onChange()

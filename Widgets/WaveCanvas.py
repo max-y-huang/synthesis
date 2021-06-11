@@ -54,7 +54,7 @@ class WaveCanvas(QFrame):
     return numpy.interp(x, [0, self.res - 1], [0, self.getInnerWidth()]) + self.padding
   
   def coordToRealY(self, y):
-    return numpy.interp(-y, [-1, 1], [0, self.getInnerHeight()]) + self.padding
+    return numpy.interp(-y, [-1, 1], [0, self.getInnerHeight()]) + self.padding  # Using -y and [-1, 1] because range [1, -1].
 
   def paintEvent(self, event):
 

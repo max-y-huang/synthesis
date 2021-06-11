@@ -2,19 +2,74 @@ import numpy, math
 
 from store import Store
 
-def getData():
+def calculateOutput():
 
-  totalInput = [0] * Store.WAVE_INPUT_RES
-  for c in Store.components:
-    if c['type'] != 'wave input':
+  processFuncs = {
+    'wave input': processWaveInput,
+    'equalizer': processEqualizer
+  }
+
+  data = [0] * Store.WAVE_OUTPUT_RES
+  for controller in Store.controllers:
+    componentId = controller['componentId']
+    if componentId == -1:
       continue
-    if 'value' in c:
-      for i, val in enumerate(c['value']):
-        totalInput[i] += val
+    component = Store.components[componentId]
+    data = processFuncs[component['type']](data, component['value'], controller['intensity'], controller['pan'])
   
-  return totalInput
+  waves = getWaves(convertRes(data, Store.WAVE_INPUT_RES))
+  data = dataFromWaves(waves, Store.WAVE_INPUT_RES, Store.WAVE_OUTPUT_RES)
+  return scaleDataToRange(data, [-1, 1])
 
-def getWaves(data, samples):
+def processWaveInput(data, input, intensity, pan):
+
+  input = convertRes(input, Store.WAVE_OUTPUT_RES)
+  for i in range(len(data)):
+    if i < len(input):
+      data[i] += input[i] * intensity / 100
+
+  return data
+
+def processEqualizer(data, input, intensity, pan):
+
+  inputRes = Store.WAVE_INPUT_RES
+  outputRes = Store.WAVE_OUTPUT_RES
+  eqRes = Store.EQUALIZER_RES
+
+  waves = getWaves(convertRes(data, inputRes))
+  for i in range(len(waves)):
+    sliderNum = math.floor(i * eqRes / inputRes)
+    waves[i]['amp'] *= input[sliderNum] / 100 * intensity / 100
+  data = dataFromWaves(waves, inputRes, outputRes)
+
+  return data
+
+def convertRes(data, outputRes):
+
+  inputRes = len(data)
+  interpIn = list(range(inputRes))
+  interpOut = data
+  ret = [0] * outputRes
+
+  for i, j in enumerate(numpy.linspace(0, inputRes - 1, outputRes)):
+    ret[i] = numpy.interp(j, interpIn, interpOut)
+  
+  return ret
+
+def scaleDataToRange(data, range):
+  dataMin, dataMax = min(data), max(data)
+  return numpy.interp(data, [dataMin, dataMax], [0, 0] if dataMin == dataMax else range)
+
+def dataFromWaves(waves, inputRes, outputRes):
+
+  ret = [0] * outputRes
+  for i in range(outputRes):
+    for w in waves:
+      ret[i] += w['amp'] * math.cos(w['speed'] * (i * inputRes / outputRes) + w['offset'])
+  
+  return ret
+
+def getWaves(data, samples=Store.WAVE_INPUT_RES // 2):
 
   N = len(data)
   samples = min(samples, N)
@@ -33,3 +88,5 @@ def getWaves(data, samples):
       'speed': speed,
       'offset': -math.pi / 2
     })
+  
+  return waves
