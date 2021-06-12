@@ -12,7 +12,7 @@ class WaveCanvas(QFrame):
 
   padding = 24
 
-  def __init__(self, res, snap=0, color=QColor(192, 192, 32), drawGridLines=True):
+  def __init__(self, res, snap=0, compress=1, color=QColor(192, 192, 32), drawGridLines=True):
 
     super().__init__()
     self.setFixedHeight(HEIGHT)
@@ -20,6 +20,7 @@ class WaveCanvas(QFrame):
 
     self.res = res
     self.snap = snap
+    self.compress = compress
     self.color = color
     self.drawGridLines = drawGridLines
     

@@ -15,6 +15,7 @@ class ScrollGroupBox(QGroupBox):
 
     scrollWidget = QWidget()
     scrollWidget.setLayout(self._scrollLayout)
+    scrollWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
     self._scrollArea = QScrollArea()
     self._scrollArea.setWidgetResizable(True)
@@ -40,10 +41,10 @@ class VScrollGroupBox(ScrollGroupBox):
   def __init__(self, title):
 
     super().__init__(title, QVBoxLayout)
-    self._scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+    self._scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
     self._scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-    self._scrollLayout.setContentsMargins(0, 0, 8, 0)
-    self._layout.setContentsMargins(8, 8, 4, 8)
+    self._scrollLayout.setContentsMargins(0, 0, 12, 0)
+    self._layout.setContentsMargins(12, 12, 0, 12)
 
 
 class HScrollGroupBox(ScrollGroupBox):
@@ -52,6 +53,6 @@ class HScrollGroupBox(ScrollGroupBox):
 
     super().__init__(title, QHBoxLayout)
     self._scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-    self._scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-    self._scrollLayout.setContentsMargins(0, 0, 0, 8)
-    self._layout.setContentsMargins(8, 8, 8, 4)
+    self._scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+    self._scrollLayout.setContentsMargins(0, 0, 0, 12)
+    self._layout.setContentsMargins(12, 12, 12, 0)

@@ -38,7 +38,7 @@ class ComponentList(VScrollGroupBox):
 
     self.listLayout = QVBoxLayout()
     # VScrollGroupBox comes with a layout.
-    self.setSpacing(8)
+    self.setSpacing(12)
     self.addLayout(self.listLayout)
     self.addLayout(footerLayout)
     self.setFixedWidth(480)

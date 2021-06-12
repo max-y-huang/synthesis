@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QComboBox, QHBoxLayout,  QPushButton, QSizePolicy, QVBoxLayout, QFrame, QSpacerItem
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QPushButton, QSizePolicy, QVBoxLayout, QFrame, QSpacerItem, QLabel
 
 from Widgets.Dial import LabelDial
 from Widgets.ScrollGroupBox import HScrollGroupBox
@@ -24,25 +25,33 @@ class ControllerList(HScrollGroupBox):
     addControllerButton.setStyleSheet('padding: 16 24')
 
     footerLayout = QHBoxLayout()
-    footerLayout.addSpacerItem(QSpacerItem(8, 0))
+    # footerLayout.addSpacerItem(QSpacerItem(12, 0))
     footerLayout.addWidget(addControllerButton)
     footerLayout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
 
     self.listLayout = QHBoxLayout()
     # HScrollGroupBox comes with a layout.
-    self.setSpacing(8)
+    self.setSpacing(4)
     self.addLayout(self.listLayout)
     self.addLayout(footerLayout)
+    self.setFixedHeight(204)
   
   def addController(self):
     c = Controller(self.onChange, self.count)
     self.controllers.append(c)
     self.listLayout.addWidget(c)
+    self.listLayout.addWidget(self.getArrowImage())
     self.count += 1
   
   def update(self):
     for c in self.controllers:
       c.updateComponentSelect()
+  
+  def getArrowImage(self):
+    pixmap = QPixmap('./assets/arrowRight.png')
+    label = QLabel(self)
+    label.setPixmap(pixmap)
+    return label
 
 
 class Controller(QFrame):
@@ -77,7 +86,7 @@ class Controller(QFrame):
     layout.addWidget(self.componentSelect)
     layout.addLayout(dialLayout)
     self.setLayout(layout)
-    self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+    self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
   
   def initInStore(self):
     Store.controllers.append({ 'id': self.id, 'componentId': -1, 'intensity': 0, 'pan': 0 })

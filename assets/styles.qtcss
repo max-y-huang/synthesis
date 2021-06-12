@@ -64,12 +64,13 @@ QScrollBar::add-line, QScrollBar::sub-line, QScrollBar::add-page, QScrollBar::su
 
 QLabel {
   color: #909090;
+  background: none;
   border: none;
   padding: 2px 4px;
 }
 
 QLineEdit, QSpinBox {
-  background-color: #181818;
+  background: #181818;
   border: none;
   padding: 1px 4px 2px 4px;
 }
@@ -132,7 +133,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-  image: url(./assets/arrowDown.png);
+  image: url(./assets/caretDown.png);
 }
 
 QComboBox QAbstractItemView {
