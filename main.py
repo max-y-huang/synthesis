@@ -1,4 +1,4 @@
-from PyQt6.QtGui import QFontDatabase
+from PyQt6.QtGui import QFontDatabase, QIcon
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QApplication, QHBoxLayout, QSizePolicy, QSpacerItem
 from PyQt6.QtCore import Qt
 
@@ -23,6 +23,7 @@ class Window(QWidget):
     super().__init__()
     self.setFixedSize(0, 0)  # Auto-fits
     self.setWindowTitle('Synthesis')
+    self.setWindowIcon(QIcon('./assets/icon.png'))
     self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
     QFontDatabase.addApplicationFont('./assets/Play.ttf')
     self.initGUI()
