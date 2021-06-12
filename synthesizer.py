@@ -34,9 +34,7 @@ def processWaveInput(data, input, intensity, pan):
 
 def processEqualizer(data, input, intensity, pan):
 
-  waveRes = Store.WAVE_RES
-  sliderCount = Store.EQUALIZER_RES
-  sliderWaveRatio = sliderCount / waveRes
+  sliderWaveRatio = Store.EQUALIZER_RES / Store.WAVE_RES
 
   waves = getWaves(data)
   for i in range(len(waves)):
