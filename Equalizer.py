@@ -15,7 +15,7 @@ class Equalizer(QFrame):
     self.onChange = onChange
     self.value = [ 50 ] * self.res
     self.initGUI()
-    self.sliderChanged(0)
+    self.sliderChanged()
   
   def initGUI(self):
 
@@ -31,7 +31,7 @@ class Equalizer(QFrame):
     self.setFixedHeight(HEIGHT)
     self.setContentsMargins(0, 8, 0, 8)
   
-  def sliderChanged(self, _):
+  def sliderChanged(self, _=None):
     for i in range(self.res):
       if i < len(self.sliders):
         self.value[i] = self.sliders[i].value
