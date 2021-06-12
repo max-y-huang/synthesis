@@ -15,6 +15,7 @@ class Equalizer(QFrame):
     self.onChange = onChange
     self.value = [ 50 ] * self.res
     self.initGUI()
+    self.sliderChanged(0)
   
   def initGUI(self):
 

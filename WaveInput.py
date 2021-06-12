@@ -10,7 +10,7 @@ class WaveInput(WaveCanvas):
 
   def __init__(self, onChange):
     
-    super().__init__(Store.WAVE_INPUT_RES, 1/32)
+    super().__init__(Store.WAVE_RES, 1/32)
     self.prevMousePos = None
     self.onChange = onChange
   
