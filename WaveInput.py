@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt
 
-import numpy
+import numpy as np
 
 from Widgets.WaveCanvas import WaveCanvas
 from store import Store
@@ -33,7 +33,7 @@ class WaveInput(WaveCanvas):
       x, y, px, py = px, py, x, y
     # Update all data points from px to x.
     for i in range(px, x + 1):
-      self.value[i] = numpy.interp(i, [px, x], [py, y])
+      self.value[i] = np.interp(i, [px, x], [py, y])
     
     self.prevMousePos = pos
     self.onChange(self.value)

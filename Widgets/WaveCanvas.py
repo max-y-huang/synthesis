@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QFrame
 from PyQt6.QtGui import QPainter, QPen, QColor
 from PyQt6.QtCore import Qt
 
-import numpy
+import numpy as np
 
 from funcs import clamp
 
@@ -40,22 +40,22 @@ class WaveCanvas(QFrame):
   
   def realToCoordX(self, x):
     x = clamp(x - self.padding, 0, self.getInnerWidth())                 # Remove offset and clamp inside input boundaries.
-    ret = numpy.interp(x, [0, self.getInnerWidth()], [0, self.res - 1])  # Map from 0 to res - 1
+    ret = np.interp(x, [0, self.getInnerWidth()], [0, self.res - 1])  # Map from 0 to res - 1
     ret = round(ret)                                                     # Snap to the nearest integer.
     return ret
   
   def realToCoordY(self, y):
     y = clamp(y - self.padding, 0, self.getInnerHeight())       # Remove offset and clamp inside input boundaries.
-    ret = numpy.interp(y, [0, self.getInnerHeight()], [1, -1])  # Map from 1 to -1
+    ret = np.interp(y, [0, self.getInnerHeight()], [1, -1])  # Map from 1 to -1
     if self.snap != 0:
       ret = round(ret / self.snap) * self.snap                  # Snap with respect to the snap interval.
     return ret
   
   def coordToRealX(self, x):
-    return numpy.interp(x, [0, self.res - 1], [0, self.getInnerWidth()]) + self.padding
+    return np.interp(x, [0, self.res - 1], [0, self.getInnerWidth()]) + self.padding
   
   def coordToRealY(self, y):
-    return numpy.interp(-y, [-1, 1], [0, self.getInnerHeight()]) + self.padding  # Using -y and [-1, 1] because range [1, -1].
+    return np.interp(-y, [-1, 1], [0, self.getInnerHeight()]) + self.padding  # Using -y and [-1, 1] because range [1, -1].
 
   def paintEvent(self, event):
 

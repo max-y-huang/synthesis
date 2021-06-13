@@ -1,7 +1,9 @@
-import numpy, math
+import numpy as np, math
 
-from funcs import formatId
 from store import Store
+
+def playData(self, data):
+  pass
 
 def calculateOutput():
 
@@ -21,7 +23,8 @@ def calculateOutput():
   
   waves = getWaves(data)
   data = dataFromWaves(waves)
-  return scaleDataToRange(data, [-1, 1])
+  data = scaleDataToRange(data, [-1, 1])
+  return data
 
 def getEmptyData(res=Store.WAVE_RES):
   return [0] * res
@@ -47,14 +50,14 @@ def processEqualizer(data, input, intensity, pan):
 
 def scaleDataToRange(data, range):
   dataMin, dataMax = min(data), max(data)
-  return numpy.interp(data, [dataMin, dataMax], [0, 0] if dataMin == dataMax else range)
+  return np.interp(data, [dataMin, dataMax], [0, 0] if dataMin == dataMax else range)
 
 def dataFromWaves(waves, res=Store.WAVE_RES):
 
   ret = [0] * res
   for i in range(res):
     for w in waves:
-      ret[i] += w['amp'] * math.cos(w['speed'] * i + w['offset'])
+      ret[i] += w['amp'] * np.cos(w['speed'] * i + w['offset'])
   
   return ret
 
@@ -62,11 +65,11 @@ def getWaves(data, samples=Store.WAVE_RES):
 
   N = len(data)
   samples = min(samples, N)
-  fft = numpy.fft.fft(data)[0:samples]
+  fft = np.fft.fft(data)[0:samples]
 
   waves = []
   for k, c in enumerate(fft):
-    speed = 2 * math.pi * k / N
+    speed = 2 * np.pi * k / N
     waves.append({
       'amp': 1 / N * c.real,
       'speed': speed,
@@ -75,7 +78,7 @@ def getWaves(data, samples=Store.WAVE_RES):
     waves.append({
       'amp': -1 / N * c.imag,
       'speed': speed,
-      'offset': -math.pi / 2
+      'offset': -np.pi / 2
     })
   
   return waves

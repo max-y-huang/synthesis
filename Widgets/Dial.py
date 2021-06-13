@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PyQt6.QtGui import QPainter, QPen, QColor
 from PyQt6.QtCore import Qt
 
-import math, numpy
+import numpy as np
 
 from Widgets.EditableLabel import EditableLabel
 from funcs import clamp
@@ -38,8 +38,8 @@ class LabelDial(QWidget):
 class Dial(QWidget):
 
   dialSize = 14
-  startAngle = 5 / 4 * math.pi
-  spanAngle = -3 / 2 * math.pi
+  startAngle = 5 / 4 * np.pi
+  spanAngle = -3 / 2 * np.pi
 
   def __init__(self, onChange, min=0, max=100, defaultValue=50):
 
@@ -89,13 +89,13 @@ class Dial(QWidget):
     return 32
   
   def valueToPercent(self):
-    return numpy.interp(self.value, [self.min, self.max], [0, 1])
+    return np.interp(self.value, [self.min, self.max], [0, 1])
   
   def valueToPosition(self):
     angle = self.startAngle + self.valueToPercent() * self.spanAngle
     radius = self.getRadius()
-    x = self.getCenterX() + radius * math.cos(angle)
-    y = self.getCenterY() - radius * math.sin(angle)  # - sign to account for inverted y-axix.
+    x = self.getCenterX() + radius * np.cos(angle)
+    y = self.getCenterY() - radius * np.sin(angle)  # - sign to account for inverted y-axix.
     return (x, y)
   
   def positionToValue(self, x, y):
@@ -103,22 +103,22 @@ class Dial(QWidget):
     angleDirection = -1 if self.spanAngle < 0 else 1
     dx, dy = x - self.getCenterX(), y - self.getCenterY()
     # Get angle in radians in the same coordinate system as QtAngle.
-    angle = numpy.interp(math.atan2(dy, -dx), [-math.pi, math.pi], [0, 2 * math.pi])
+    angle = np.interp(np.arctan2(dy, -dx), [-np.pi, np.pi], [0, 2 * np.pi])
     # Move 0 degrees to startAngle, set rotation direction to that of the dial.
     angle = (angle - self.startAngle) * angleDirection
     if angle < 0:
-      angle += 2 * math.pi
+      angle += 2 * np.pi
 
-    maxPercent = 2 * math.pi / abs(self.spanAngle)
+    maxPercent = 2 * np.pi / abs(self.spanAngle)
     percentOverflow = maxPercent - 1
-    percent = numpy.interp(angle, [0, 2 * math.pi], [0, maxPercent])
+    percent = np.interp(angle, [0, 2 * np.pi], [0, maxPercent])
     if percent > 1 + percentOverflow / 2:
       percent -= maxPercent
-    return round(numpy.interp(percent, [0, 1], [self.min, self.max]))
+    return round(np.interp(percent, [0, 1], [self.min, self.max]))
 
   def drawArc(self, qp, posX, posY, radius, startAngle, spanAngle):
     def toQtAngle(rad):
-      return rad * 180 / math.pi * 16  # QtAngle = 1/16th degree.
+      return rad * 180 / np.pi * 16  # QtAngle = 1/16th degree.
     qp.drawArc(posX - radius, posY - radius, radius * 2, radius * 2, toQtAngle(startAngle), toQtAngle(spanAngle))
   
   def drawCircle(self, qp, posX, posY, radius):
@@ -154,7 +154,7 @@ class Dial(QWidget):
   
   def touching(self, x, y):
     dx, dy = x - self.getCenterX(), y - self.getCenterY()
-    dist = math.sqrt(dx * dx + dy * dy)
+    dist = np.sqrt(dx * dx + dy * dy)
     return abs(dist - self.getRadius()) <= self.dialSize / 2
   
   def mousePressEvent(self, event):
