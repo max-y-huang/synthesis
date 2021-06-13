@@ -37,7 +37,7 @@ class ControllerList(HScrollGroupBox):
     self.setFixedHeight(220)
   
   def addController(self):
-    c = Controller(self.onChange, self.count)
+    c = Controller(self.onChange, formatId(self.count))
     self.controllers.append(c)
     self.listLayout.addWidget(c)
     self.listLayout.addWidget(self.getArrowImage())
@@ -71,7 +71,8 @@ class Controller(QFrame):
   def initGUI(self):
 
     self.componentSelect = QComboBox()
-    self.componentSelect.currentIndexChanged.connect(self.onComponentChange)
+    self.componentSelect.setPlaceholderText('Select Component')
+    self.componentSelect.currentIndexChanged.connect(self.onIndexChange)
 
     self.intensity = LabelDial('Intensity', self.onIntensityChange)
     self.pan = LabelDial('Pan',self.onPanChange, -100, 100, 0)
@@ -90,7 +91,7 @@ class Controller(QFrame):
     self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
   
   def initInStore(self):
-    Store.controllers.append({ 'id': self.id, 'componentId': -1, 'intensity': 0, 'pan': 0 })
+    Store.controllers[self.id] = { 'id': self.id, 'componentId': None, 'intensity': 0, 'pan': 0 }
   
   def updateComponentSelect(self):
     
@@ -100,21 +101,22 @@ class Controller(QFrame):
 
     self.stateLocked = True
 
-    items = list(map(getComponentDisplayName, Store.components))
-    value = self.componentSelect.currentIndex()
-    if value == -1:
-      value = len(items) - 1
+    components = Store.getComponents(Store)
+    items = list(map(getComponentDisplayName, components))
+    index = self.componentSelect.currentIndex() % len(items)  # Set to last item if index = -1.
 
     self.componentSelect.clear()
     self.componentSelect.addItems(items)
-    self.componentSelect.setCurrentIndex(value)
+    self.componentSelect.setCurrentIndex(index)
 
     self.stateLocked = False
-    self.onComponentChange(self.componentSelect.currentIndex())
+    self.onIndexChange(index)
   
-  def onComponentChange(self, componentId):
+  def onIndexChange(self, index):
     if self.stateLocked:
       return
+    components = Store.getComponents(Store)
+    componentId = components[index]['id']
     Store.controllers[self.id]['componentId'] = componentId
     self.onChange()
   

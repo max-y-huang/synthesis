@@ -1,5 +1,6 @@
 import numpy, math
 
+from funcs import formatId
 from store import Store
 
 def calculateOutput():
@@ -10,11 +11,12 @@ def calculateOutput():
   }
 
   data = getEmptyData()
-  for controller in Store.controllers:
+  for controller in Store.getControllers(Store):
     componentId = controller['componentId']
-    if componentId == -1:
+    if componentId == None:
       continue
     component = Store.components[componentId]
+    # TODO: Take into account missing component.
     data = processFuncs[component['type']](data, component['value'], controller['intensity'], controller['pan'])
   
   waves = getWaves(data)

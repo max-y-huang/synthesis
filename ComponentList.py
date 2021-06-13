@@ -44,13 +44,13 @@ class ComponentList(VScrollGroupBox):
     self.setFixedWidth(480)
 
   def addWaveInput(self):
-    c = Component('wave input', self.onChange, self.count, 'New Wave')
+    c = Component('wave input', self.onChange, formatId(self.count), 'New Wave')
     self.components.append(c)
     self.listLayout.addWidget(c)
     self.count += 1
   
   def addEqualizer(self):
-    c = Component('equalizer', self.onChange, self.count, 'New EQ')
+    c = Component('equalizer', self.onChange, formatId(self.count), 'New EQ')
     self.components.append(c)
     self.listLayout.addWidget(c)
     self.count += 1
@@ -73,7 +73,7 @@ class Component(QFrame):
   def initGUI(self):
     inputWidgetComponent = { 'wave input': WaveInput, 'equalizer': Equalizer }
 
-    idWidget = QLabel(formatId(self.id))
+    idWidget = QLabel(self.id)
     idWidget.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
     nameWidget = EditableLabel(self.onNameChange, 'text', self.name)
@@ -92,7 +92,7 @@ class Component(QFrame):
     self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
   
   def initInStore(self):
-    Store.components.append({ 'id': self.id, 'type': self.type, 'name': '', 'value': [] })
+    Store.components[self.id] = { 'id': self.id, 'type': self.type, 'name': '', 'value': [] }
 
   def onValueChange(self, input):
     Store.components[self.id]['value'] = input
