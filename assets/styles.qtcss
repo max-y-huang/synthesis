@@ -41,15 +41,15 @@ QScrollBar:vertical {
   background: transparent;
 }
 QScrollBar:vertical {
-  width: 12px;
+  width: 10px;
 }
 QScrollBar:horizontal {
-  height: 12px;
+  height: 10px;
 }
 
 QScrollBar::handle {
   background: transparent;
-  border-radius: 6px;
+  border-radius: 5px;
 }
 QScrollBar::handle:enabled {
   background: #606060;
