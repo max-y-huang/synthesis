@@ -18,10 +18,10 @@ class Output(QGroupBox):
     self.waveRight = WaveCanvas(Store.WAVE_RES, 0, 2, QColor(32, 156, 255), False)
 
     layout = QVBoxLayout()
-    layout.setContentsMargins(12, 12, 12, 12)
+    layout.setContentsMargins(16, 16, 16, 16)
     layout.setSpacing(12)
     layout.addWidget(self.waveLeft)
     layout.addWidget(self.waveRight)
     self.setLayout(layout)
-    self.setMinimumWidth(640)
+    self.setMinimumWidth(720)
     self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)

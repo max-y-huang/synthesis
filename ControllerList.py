@@ -34,7 +34,7 @@ class ControllerList(HScrollGroupBox):
     self.setSpacing(4)
     self.addLayout(self.listLayout)
     self.addLayout(footerLayout)
-    self.setFixedHeight(204)
+    self.setFixedHeight(220)
   
   def addController(self):
     c = Controller(self.onChange, self.count)
@@ -84,6 +84,7 @@ class Controller(QFrame):
     layout = QVBoxLayout()
     layout.setSpacing(8)
     layout.addWidget(self.componentSelect)
+    layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
     layout.addLayout(dialLayout)
     self.setLayout(layout)
     self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)

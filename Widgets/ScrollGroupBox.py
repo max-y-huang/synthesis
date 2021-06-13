@@ -44,7 +44,7 @@ class VScrollGroupBox(ScrollGroupBox):
     self._scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
     self._scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
     self._scrollLayout.setContentsMargins(0, 0, 12, 0)
-    self._layout.setContentsMargins(12, 12, 0, 12)
+    self._layout.setContentsMargins(16, 16, 4, 16)
 
 
 class HScrollGroupBox(ScrollGroupBox):
@@ -55,4 +55,4 @@ class HScrollGroupBox(ScrollGroupBox):
     self._scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
     self._scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
     self._scrollLayout.setContentsMargins(0, 0, 0, 12)
-    self._layout.setContentsMargins(12, 12, 12, 0)
+    self._layout.setContentsMargins(16, 16, 16, 4)
