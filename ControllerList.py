@@ -22,7 +22,6 @@ class ControllerList(HScrollGroupBox):
     addControllerButton = QPushButton('Add Controller')
     addControllerButton.clicked.connect(self.addController)
     addControllerButton.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
-    addControllerButton.setStyleSheet('padding: 16 24')
 
     footerLayout = QHBoxLayout()
     # footerLayout.addSpacerItem(QSpacerItem(12, 0))

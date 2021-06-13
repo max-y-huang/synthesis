@@ -22,10 +22,8 @@ class ComponentList(VScrollGroupBox):
 
     addWaveInputButton = QPushButton('Add Wave')
     addWaveInputButton.clicked.connect(self.addWaveInput)
-    addWaveInputButton.setStyleSheet('padding: 16 24')
     addEqualizerButton = QPushButton('Add EQ')
     addEqualizerButton.clicked.connect(self.addEqualizer)
-    addEqualizerButton.setStyleSheet('padding: 16 24')
 
     footerOptionsLayout = QHBoxLayout()
     footerOptionsLayout.addWidget(addWaveInputButton)
