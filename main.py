@@ -1,9 +1,9 @@
-from PyQt6.QtGui import QFontDatabase, QIcon
+from PyQt6.QtGui import QFontDatabase, QIcon, QScreen
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QApplication, QHBoxLayout, QSizePolicy, QSpacerItem
 from PyQt6.QtCore import Qt
 
 import sys
-import synthesizer
+from synthesizer import Synthesizer
 
 from ComponentList import ComponentList
 from ControllerList import ControllerList
@@ -13,15 +13,15 @@ class Window(QWidget):
 
   def onComponentUpdate(self):
     self.controllerList.update()
-    self.output.waveLeft.updateValue(synthesizer.calculateOutput())
+    self.output.canvas.updateValue(Synthesizer.calculateOutput())
   
   def onControllerUpdate(self):
-    self.output.waveLeft.updateValue(synthesizer.calculateOutput())
+    self.output.canvas.updateValue(Synthesizer.calculateOutput())
 
   def __init__(self):
 
     super().__init__()
-    self.setFixedSize(0, 0)  # Auto-fits
+    # self.setFixedSize(0, 0)  # Auto-fits
     self.setWindowTitle('Synthesis')
     self.setWindowIcon(QIcon('./assets/icon.png'))
     self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
@@ -35,22 +35,23 @@ class Window(QWidget):
 
     self.output = Output()
     self.controllerList = ControllerList(self.onControllerUpdate)
+    self.controllerList.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
     self.componentList = ComponentList(self.onComponentUpdate)
+    self.componentList.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-    rightLayout = QVBoxLayout()
-    rightLayout.setSpacing(16)
-    rightLayout.addWidget(self.controllerList)
-    rightLayout.addWidget(self.output)
-    rightLayout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
+    inputLayout = QHBoxLayout()
+    inputLayout.setSpacing(16)
+    inputLayout.addWidget(self.componentList)
+    inputLayout.addWidget(self.controllerList)
 
-    layout = QHBoxLayout()
+    layout = QVBoxLayout()
     layout.setSpacing(16)
-    layout.addWidget(self.componentList)
-    layout.addLayout(rightLayout)
+    layout.addLayout(inputLayout)
+    layout.addWidget(self.output)
     self.setLayout(layout)
 
 app = QApplication(sys.argv)
 app.setStyleSheet(open('./assets/styles.qtcss', 'r').read())
 window = Window()
-window.show()
+window.showMaximized()
 sys.exit(app.exec())

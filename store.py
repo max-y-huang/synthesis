@@ -1,4 +1,4 @@
-class Store:
+class _Store:
 
   WAVE_RES = 65
   EQUALIZER_RES = 7
@@ -13,3 +13,5 @@ class Store:
   def getControllers(self):
     tuples = list(self.controllers.items())
     return list(map(lambda item: item[1], tuples))
+
+Store = _Store()

@@ -6,7 +6,7 @@ import numpy as np
 
 from funcs import clamp
 
-HEIGHT = 156
+HEIGHT = 144
 
 class WaveCanvas(QFrame):
 

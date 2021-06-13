@@ -100,7 +100,7 @@ class Controller(QFrame):
 
     self.stateLocked = True
 
-    components = Store.getComponents(Store)
+    components = Store.getComponents()
     items = list(map(getComponentDisplayName, components))
     index = self.componentSelect.currentIndex() % len(items)  # Set to last item if index = -1.
 
@@ -114,7 +114,7 @@ class Controller(QFrame):
   def onIndexChange(self, index):
     if self.stateLocked:
       return
-    components = Store.getComponents(Store)
+    components = Store.getComponents()
     componentId = components[index]['id']
     Store.controllers[self.id]['componentId'] = componentId
     self.onChange()
