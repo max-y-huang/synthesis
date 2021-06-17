@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QVBoxLayout, QWidget, QApplication, QHBoxLayout, QSi
 from PyQt6.QtCore import Qt
 
 import sys
-from synthesizer import Synthesizer
 
 from ComponentList import ComponentList
 from ControllerList import ControllerList
@@ -13,10 +12,10 @@ class Window(QWidget):
 
   def onComponentUpdate(self):
     self.controllerList.update()
-    self.output.canvas.updateValue(Synthesizer.calculateOutput())
+    self.output.update()
   
   def onControllerUpdate(self):
-    self.output.canvas.updateValue(Synthesizer.calculateOutput())
+    self.output.update()
 
   def __init__(self):
 
