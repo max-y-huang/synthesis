@@ -4,7 +4,7 @@ from PyQt6.QtGui import QColor
 from Widgets.WaveCanvas import WaveCanvas
 from store import Store
 from AudioPlayer import AudioPlayer
-from synthesizer import Synthesizer
+from synth import Synth
 
 class Output(QGroupBox):
 
@@ -20,10 +20,19 @@ class Output(QGroupBox):
 
     self.active = not self.active
     if self.active:
-      self.player.queueNote(440)
+      # self.player.add('A2')
+      # self.player.add('E3')
+      # self.player.add('C4')
+      self.player.add('A4')
+      # self.player.add('E5')
+      # self.player.add('C6')
+      # self.player.add('A6')
+      # self.player.add('E7')
+      # self.player.add('C8')
+      self.player.play()
       self.playButton.setText('Stop Tone')
     else:
-      self.player.dequeueNote(440)
+      self.player.clear()
       self.playButton.setText('Play Tone')
   
   def initGUI(self):
@@ -45,6 +54,6 @@ class Output(QGroupBox):
     self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
   
   def update(self):
-    value = Synthesizer.calculateOutput()
+    value = Synth.calculateOutput()
     self.canvas.updateValue(value)
     self.player.setData(value)

@@ -1,8 +1,9 @@
 import numpy as np, math
 
 from store import Store
+from funcs import scaleWaveDataToRange
 
-class _Synthesizer:
+class _Synth:
 
   def calculateOutput(self):
 
@@ -22,7 +23,7 @@ class _Synthesizer:
     
     waves = self.getWaves(data)
     data = self.dataFromWaves(waves)
-    data = self.scaleDataToRange(data, [-1, 1])
+    data = scaleWaveDataToRange(data, [-1, 1])
     return data
 
   def getEmptyData(self, res=Store.WAVE_RES):
@@ -46,10 +47,6 @@ class _Synthesizer:
       waves[i]['amp'] *= input[sliderNum] / 100
 
     return self.dataFromWaves(waves)
-
-  def scaleDataToRange(self, data, range):
-    dataMin, dataMax = min(data), max(data)
-    return np.interp(data, [dataMin, dataMax], [0, 0] if dataMin == dataMax else range)
 
   def dataFromWaves(self, waves, res=Store.WAVE_RES):
 
@@ -82,4 +79,4 @@ class _Synthesizer:
     
     return waves
   
-Synthesizer = _Synthesizer()
+Synth = _Synth()
