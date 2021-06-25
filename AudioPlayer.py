@@ -2,8 +2,9 @@ import pyaudio, time, threading, atexit, re, numpy as np
 
 class AudioPlayer:
 
-  # fs = 16000
-  fs = 44100
+  fs = 16000
+  # fs = 22050
+  # fs = 44100
   updateRate = 1/10
 
   def __init__(self):

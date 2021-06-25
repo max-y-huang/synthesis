@@ -37,7 +37,7 @@ class Output(QGroupBox):
   
   def initGUI(self):
 
-    self.canvas = WaveCanvas(Store.WAVE_RES, 0, 2, QColor(32, 156, 255), False)
+    self.canvas = WaveCanvas(Store.WAVE_RES, 0, 3, QColor(32, 156, 255), False)
 
     self.playButton = QPushButton('Play Tone')
     self.playButton.clicked.connect(self.onButtonPressed)

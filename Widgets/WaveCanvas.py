@@ -81,8 +81,10 @@ class WaveCanvas(QFrame):
     # Draw data lines.
     pen.setColor(self.color)
     qp.setPen(pen)
-    for i in range(len(value) - 1):
-      qp.drawLine(self.coordToRealX(i), self.coordToRealY(value[i]), self.coordToRealX(i + 1), self.coordToRealY(value[i + 1]))
+    for i in range(len(value) * self.compress - 1):
+      a = i % len(value)
+      b = (i + 1) % len(value)
+      qp.drawLine(self.coordToRealX(i / self.compress), self.coordToRealY(value[a]), self.coordToRealX((i + 1) / self.compress), self.coordToRealY(value[b]))
     
     qp.end()
   
