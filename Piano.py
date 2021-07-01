@@ -13,7 +13,6 @@ class Piano:
     thread.start()
   
   def end(self):
-    print("exit button clicked.")
     self.keyboard.close()
     pygame.midi.quit()
     pygame.quit()

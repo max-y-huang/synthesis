@@ -13,6 +13,9 @@ class AudioPlayer:
     self.wavePlaybackPos = 0
     self.notes = []
     self.data = []
+    
+    thread = threading.Thread(target=self.startStream, args=())
+    thread.start()
   
   def exit(self):
     self.clear()
@@ -28,13 +31,8 @@ class AudioPlayer:
     return octave * 12 + noteNum
   
   def getFreq(self, pitch):
-
     offset = pitch - 57  # A4 = 57
     return 440.0 * (2 ** (1/12.0)) ** offset
-    
-  
-  def playing(self):
-    return len(self.notes) == 0
   
   def add(self, pitch, volume=0.5):
     # pitch = self.getPitch(note)
@@ -51,15 +49,14 @@ class AudioPlayer:
   def setData(self, data):
     self.data = data
   
-  def play(self):
-
-    # Helper variables for dataFunc.
-    lenData = len(self.data)
-    rangeData = list(range(lenData))
+  def startStream(self):
 
     def getDataByFrame(n):
 
       def getWaveDataByFrame(n, freq, volume):
+
+        lenData = len(self.data)
+        rangeData = list(range(lenData))
 
         index = n * lenData * freq / self.fs
         return np.interp(index % lenData, rangeData, self.data) * volume / 5   # Dividing by a constant to lower the peak from stacking multiple notes.
@@ -75,20 +72,10 @@ class AudioPlayer:
       self.wavePlaybackPos += frame_count
       return (
         samples.astype(np.float32).tobytes(),
-        pyaudio.paComplete if self.playing() else pyaudio.paContinue
+        pyaudio.paContinue
       )
-    
-    def handleStream():
-      stream = self.p.open(format=pyaudio.paFloat32, channels=1, rate=self.fs, output=True, stream_callback=streamCallback)
-      stream.start_stream()
-      while stream.is_active():
-        time.sleep(self.updateRate)
-      stream.stop_stream()
-      stream.close()
-    
-    thread = threading.Thread(target=handleStream, args=())
-    thread.start()
-  
-  # def play(self):
-  #   for note in self.notes:
-  #     self.playNote(note)
+
+    stream = self.p.open(format=pyaudio.paFloat32, channels=1, rate=self.fs, output=True, stream_callback=streamCallback)
+    stream.start_stream()
+    while True:
+      time.sleep(self.updateRate)

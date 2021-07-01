@@ -21,7 +21,6 @@ class Output(QGroupBox):
 
     if type == 'add':
       self.player.add(pitch, intensity / 128)
-      self.player.play()
     
     elif type == 'remove':
       self.player.remove(pitch)
