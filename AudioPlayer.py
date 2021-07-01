@@ -18,26 +18,32 @@ class AudioPlayer:
     self.clear()
     self.p.terminate()
   
-  def getFreq(self, note):
+  def getPitch(self, note):
 
     noteVals = { 'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11 }
     split = re.search('[0-9]', note).start()
     noteNum = noteVals[note[0:split]]
     octave = int(note[split:])
 
-    offset = (octave * 12 + noteNum) - 57  # A4 = 57
+    return octave * 12 + noteNum
+  
+  def getFreq(self, pitch):
+
+    offset = pitch - 57  # A4 = 57
     return 440.0 * (2 ** (1/12.0)) ** offset
     
   
   def playing(self):
     return len(self.notes) == 0
   
-  def add(self, note, volume=0.5):
-    self.remove(note)
-    self.notes.append({ 'note': note, 'volume': volume })
+  def add(self, pitch, volume=0.5):
+    # pitch = self.getPitch(note)
+    self.remove(pitch)
+    self.notes.append({ 'pitch': pitch, 'volume': volume })
   
-  def remove(self, note):
-    self.notes = list(filter(lambda item: item['note'] != note, self.notes))
+  def remove(self, pitch):
+    # pitch = self.getPitch(note)
+    self.notes = list(filter(lambda item: item['pitch'] != pitch, self.notes))
   
   def clear(self):
     self.notes.clear()
@@ -60,7 +66,7 @@ class AudioPlayer:
       
       ret = 0
       for note in self.notes:
-        ret += getWaveDataByFrame(n, self.getFreq(note['note']), note['volume'])
+        ret += getWaveDataByFrame(n, self.getFreq(note['pitch']), note['volume'])
       return ret
 
     def streamCallback(in_data, frame_count, time_info, status):
