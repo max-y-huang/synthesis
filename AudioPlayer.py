@@ -1,24 +1,21 @@
-import pyaudio, time, threading, atexit, re, numpy as np
+import pyaudio, time, re, numpy as np
+from threads import threads
 
 class AudioPlayer:
 
   fs = 16000
   # fs = 22050
   # fs = 44100
-  updateRate = 1/10
 
   def __init__(self):
-    atexit.register(self.exit)
     self.p = pyaudio.PyAudio()
     self.wavePlaybackPos = 0
     self.notes = []
     self.data = []
-    
-    thread = threading.Thread(target=self.startStream, args=())
-    thread.start()
+    threads.add(self.startStream, ())
   
-  def exit(self):
-    self.clear()
+  def onExit(self):
+    self.stream.close()
     self.p.terminate()
   
   def getPitch(self, note):
@@ -58,6 +55,9 @@ class AudioPlayer:
         lenData = len(self.data)
         rangeData = list(range(lenData))
 
+        if lenData == 0:
+          return 0
+
         index = n * lenData * freq / self.fs
         return np.interp(index % lenData, rangeData, self.data) * volume / 5   # Dividing by a constant to lower the peak from stacking multiple notes.
       
@@ -68,6 +68,10 @@ class AudioPlayer:
 
     def streamCallback(in_data, frame_count, time_info, status):
 
+      if threads.ended():
+        self.onExit()
+        return (np.array([]).tobytes(), pyaudio.paComplete)
+
       samples = np.array([ getDataByFrame(self.wavePlaybackPos + i) for i in range(frame_count) ])
       self.wavePlaybackPos += frame_count
       return (
@@ -75,7 +79,4 @@ class AudioPlayer:
         pyaudio.paContinue
       )
 
-    stream = self.p.open(format=pyaudio.paFloat32, channels=1, rate=self.fs, output=True, stream_callback=streamCallback)
-    stream.start_stream()
-    while True:
-      time.sleep(self.updateRate)
+    self.stream = self.p.open(format=pyaudio.paFloat32, channels=1, rate=self.fs, output=True, stream_callback=streamCallback)

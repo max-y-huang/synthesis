@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QWidget, QApplication, QHBoxLayout, QSi
 from PyQt6.QtCore import Qt
 
 import sys
+from threads import threads
 
 from ComponentList import ComponentList
 from ControllerList import ControllerList
@@ -20,7 +21,6 @@ class Window(QWidget):
   def __init__(self):
 
     super().__init__()
-    # self.setFixedSize(0, 0)  # Auto-fits
     self.setWindowTitle('Synthesis')
     self.setWindowIcon(QIcon('./assets/icon.png'))
     self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
@@ -53,4 +53,6 @@ app = QApplication(sys.argv)
 app.setStyleSheet(open('./assets/styles.qtcss', 'r').read())
 window = Window()
 window.showMaximized()
-sys.exit(app.exec())
+app.exec()
+threads.end()
+sys.exit()

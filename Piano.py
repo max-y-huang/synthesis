@@ -1,26 +1,24 @@
-import pygame, pygame.midi, threading
+import pygame, pygame.midi
+from threads import threads
 
 class Piano:
   
   def __init__(self, onChange):
     pygame.init()
     pygame.midi.init()
-
     self.keyboard = pygame.midi.Input(pygame.midi.get_default_input_id())
     self.onChange = onChange
-
-    thread = threading.Thread(target=self.poll, args=())
-    thread.start()
+    threads.add(self.poll, ())
   
-  def end(self):
+  def onExit(self):
     self.keyboard.close()
     pygame.midi.quit()
     pygame.quit()
-    exit()
 
   def poll(self):
 
-    while True:
+    while not threads.ended():
+
       if not self.keyboard.poll():
         continue
 
@@ -32,3 +30,5 @@ class Piano:
           self.onChange('add', pitch, intensity)
         elif state == 128:
           self.onChange('remove', pitch)
+
+    self.onExit()
